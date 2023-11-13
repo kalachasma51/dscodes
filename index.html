@@ -1,0 +1,1606 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>uhv</title>
+</head>
+<body>
+    <pre>
+
+DS LAB PROGRAMS:01)
+     Implement stack operations such as Push,
+       Pop and Display using arrays /
+       global variables.
+       The program should print appropriate messages for stack overflow and
+       stack underflow
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 3
+     int top = -1
+       , stack[MAX];
+     void push ();
+     void pop ();
+     void display ();
+     void main ()
+     {
+       int ch;
+       while (1)
+	 {
+	   printf ("\n***Stack Menu***");
+	   printf ("\n\n1.Push\n2.Pop\n3.Display\n4.Exit");
+	   printf ("\n\nEnter your choice(1-4): ");
+	   scanf ("%d", &ch);
+	   switch (ch)
+	     {
+	     case 1:
+	       push ();
+	       break;
+	     case 2:
+	       pop ();
+	       break;
+	     case 3:
+	       display ();
+	       break;
+	     case 4:
+	       exit (0);
+	     default:
+	       printf ("\nWrong CHoice!!");
+	     }
+	 }
+     }
+
+void push ()
+{
+  int val;
+  if (top == MAX - 1)
+    {
+      printf ("\nStack is full!!");
+    }
+  else
+    {
+      printf ("\nEnter element to push:");
+      scanf ("%d", &val);
+      top = top + 1;
+      stack[top] = val;
+    }
+}
+
+void pop ()
+{
+  if (top == -1)
+    {
+      printf ("\nStack is empty");
+    }
+  else
+    {
+      printf ("\nDeleted element is %d", stack[top]);
+      top = top - 1;
+    }
+}
+
+void display ()
+{
+  int i;
+  if (top == -1)
+    {
+      printf ("STACK IS EMPTY\n");
+    }
+  else
+    {
+      printf ("\nStack is ....\n");
+      for (i = top; i >= 0; --i)
+	printf ("%d\n", stack[i]);
+    }
+}
+
+02)
+     Convert a given valid parenthesized infix arithmetic expression to
+       postfix expression.
+       The expression consists of single character operands and +, -, *,
+       /operators.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+     int F (char symbol)
+     {
+       switch (symbol)
+	 {
+	 case '+':
+	 case '-':
+	   return 2;
+	 case '*':
+	 case '/':
+	   return 4;
+	 case '^':
+	 case '$':
+	   return 5;
+	 case '(':
+	   return 0;
+	 case '#':
+	   return -1;
+	 default:
+	   return 8;
+	 }
+     }
+
+int G (char symbol)
+{
+  switch (symbol)
+    {
+    case '+':
+    case '-':
+      return 1;
+    case '*':
+    case '/':
+      return 3;
+    case '^':
+    case '$':
+      return 6;
+    case '(':
+      return 9;
+    case ')':
+      return 0;
+    default:
+      return 7;
+    }
+}
+
+void infix_postfix (char infix[], char postfix[])
+{
+  int top;
+  int j;
+  int i;
+  char s[30];
+  char symbol;
+  top = -1;
+  s[++top] = '#';
+  j = 0;
+  for (i = 0; i < strlen (infix); i++)
+    {
+      symbol = infix[i];
+      while (F (s[top]) > G (symbol))
+	{
+	  postfix[j] = s[top--];
+	  j++;
+	}
+      if (F (s[top]) != G (symbol))
+	s[++top] = symbol;
+      else
+	top--;
+    }
+  while (s[top] != '#')
+    {
+      postfix[j++] = s[top--];
+    }
+  postfix[j] = '\0';
+}
+
+int main ()
+{
+  char infix[20], postfix[20];
+  printf ("ENTER AN INFIX EXPRESSION\n");
+  scanf ("%s", infix);
+  infix_postfix (infix, postfix);
+  printf ("POSTFIX EXPRESSION IS %s", postfix);
+  return 0;
+}
+
+03)
+     Evaluate a valid suffix /
+       postfix expression using stack.Assume that suffix /
+       postfix expression is read as a single line consisting of non negative
+       single digit operands and binary arithmetic operators.
+       The arithmetic operators are +, -, /, *, ^($).
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+     double compute (char symbol, double op1, double op2)
+     {
+       switch (symbol)
+	 {
+	 case '+':
+	   return op1 + op2;
+	 case '-':
+	   return op1 - op2;
+	 case '/':
+	   return op1 / op2;
+	 case '*':
+	   return op1 * op2;
+	 case '^':
+	 case '$':
+	   return pow (op1, op2);
+	 default:
+	   printf ("invalid operation\n");
+	   exit (0);
+	 }
+     }
+
+int main ()
+{
+  double s[20], op1, op2, res;
+  int top, i;
+  char postfix[20], symbol;
+  printf ("enter the postfix expression\n");
+  scanf ("%s", postfix);
+  top = -1;
+  for (i = 0; i < strlen (postfix); i++)
+    {
+      symbol = postfix[i];
+      if (isdigit (symbol))
+	s[++top] = symbol - '0';
+      else
+	{
+	  op2 = s[top--];
+	  op1 = s[top--];
+	  res = compute (symbol, op1, op2);
+	  s[++top] = res;
+	}
+    }
+  res = s[top--];
+  printf ("the result is=%f\n", res);
+  return 0;
+}
+
+04)
+     Find if a given string is a palindrome or not using stack.
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 50
+     int i, top = -1
+       , f = 0;
+     char s[MAX];
+     char a[MAX];
+     void push (char);
+     char pop ();
+     int main ()
+     {
+       printf ("enter the expression\n");
+       scanf ("%s", a);
+       for (i = 0; a[i] != '\0'; i++)
+	 {
+	   push (a[i]);
+	 }
+       for (i = 0; a[i] != '\0'; i++)
+	 {
+	   if (a[i] != pop ())
+	     {
+	       f = 1;
+	       break;
+	     }
+	 }
+       if (f == 0)
+	 {
+	   printf ("it is a palindrome\n");
+	 }
+       else
+	 {
+	   printf ("it is not a palindrome\n");
+	 }
+     }
+
+void push (char ch)
+{
+  top++;
+  s[top] = ch;
+}
+
+char pop ()
+{
+  char x = s[top];
+  top--;
+  return x;
+}
+
+05)
+     Implement Queue operations such as Insert, Delete and Display.Display
+       appropriate messages on Queue overflow and Queue underflow conditions.
+#include <stdio.h>
+#include <stdlib.h>
+#define que_size 4
+     int rear, front, item, q[10];
+     void insertq ()
+     {
+       if (rear == que_size - 1)
+	 printf ("Queue Overflow\n");
+       else
+	 {
+	   rear = rear + 1;
+	   q[rear] = item;
+	 }
+     }
+
+int delq ()
+{
+  if (front > rear)
+    return -1;
+  else
+    return (q[front++]);
+}
+
+void display ()
+{
+  int i;
+  if (front > rear)
+    printf ("Queue Underflow\n");
+  else
+    {
+      for (i = front; i <= rear; i++)
+	{
+	  printf ("%d\t\n", q[i]);
+	}
+    }
+}
+
+int main ()
+{
+  int ch, delitem;
+  front = 0;
+  rear = -1;
+  while (1)
+    {
+      printf ("1.Insert 2.Delete 3.Display 4.Exit\n");
+      printf ("Enter your Choice\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("Enter the Item\n");
+	  scanf ("%d", &item);
+	  insertq ();
+	  break;
+	case 2:
+	  delitem = delq ();
+	  if (delitem == -1)
+	    printf ("Queue Underflow\n");
+	  else
+	    printf ("Deleted item= %d\n", delitem);
+	  break;
+	case 3:
+	  display ();
+	  break;
+	case 4:
+	  exit (0);
+	default:
+	  printf ("Invalid choice!!try again\n");
+	  break;
+	}
+    }
+  return 0;
+}
+
+06)
+     Implement Circular queue operations such as Insert,
+       Delete and Display.
+       Display appropriate messages on Queue overflow and Queue underflow
+       conditions.
+#include <stdio.h>
+#include <stdlib.h>
+#define que_size 5
+     int rear, front, count, item, q[10];
+     void insertq ()
+     {
+       if (count == que_size)
+	 {
+	   printf ("Queue is full\n");
+	   return;
+	 }
+       rear = (rear + 1) % que_size;
+       q[rear] = item;
+       count++;
+     }
+
+int deleteq ()
+{
+  if (count == 0)
+    return -1;
+  item = q[front];
+  front = (front + 1) % que_size;
+  count -= 1;
+  return item;
+}
+
+void displayq ()
+{
+  int i, f;
+  if (count == 0)
+    {
+      printf ("queue is empty\n");
+      return;
+    }
+  else
+    for (i = 1, f = front; i <= count; i++)
+      {
+	printf ("%d\n", q[f]);
+	f = (f + 1) % que_size;
+      }
+}
+
+int main ()
+{
+  int ch, delitem;
+  front = 0;
+  rear = -1;
+  while (1)
+    {
+      printf ("1.INSERT 2.DELETE 3.DISPLAY 4.EXIT\n");
+      printf ("ENTER YOUR CHOICE\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("Enter the Item:");
+	  scanf ("%d", &item);
+	  insertq ();
+	  break;
+	case 2:
+	  delitem = deleteq ();
+	  if (delitem == -1)
+	    printf ("Queue Underflow");
+	  else
+	    printf ("Deleted Item is %d\n", delitem);
+	  break;
+	case 3:
+	  displayq ();
+	  break;
+	case 4:
+	  exit (0);
+	default:
+	  printf ("Invalid Choice");
+	  break;
+	}
+    }
+  return 0;
+}
+
+07)
+     Implement Priority queue operations such as Insert, Delete and
+       Display.Display appropriate messages on Queue overflow and
+       Queue underflow conditions.
+#include <stdio.h>
+#include <stdlib.h>
+#define qsize 3
+     void insert (int item, int q[], int *r)
+     {
+       int j;
+       if (*r == qsize - 1)
+	 {
+	   printf ("QUEUE OVERFLOW\n");
+	   return;
+	 }
+       j = *r;
+       while (j >= 0 && item < q[j])
+	 {
+	   q[j + 1] = q[j];
+	   j--;
+	 }
+       q[j + 1] = item;
+       *r = *r + 1;
+     }
+
+void display (int *r, int *f, int q[])
+{
+  int i;
+  if (*f > *r)
+    printf ("QUEUE IS EMPTY\n");
+  else
+    {
+      for (i = *f; i <= *r; i++)
+	printf ("%d ", q[i]);
+    }
+  printf ("\n");
+}
+
+int delete (int *f, int *r, int q[])
+{
+  if (*f > *r)
+    return -1;
+  else
+    return (q[(*f)++]);
+}
+
+int main ()
+{
+  int front, rear, ch, delitm, item, q[5];
+  front = 0;
+  rear = -1;
+  while (1)
+    {
+      printf ("ENTER YOUR CHOICE\n");
+      printf ("1.INSERT 2.DELETE 3.DISPLAY 4.EXIT\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("ENTER THE ITEM\n");
+	  scanf ("%d", &item);
+	  insert (item, q, &rear);
+	  break;
+	case 2:
+	  delitm = delete (&front, &rear, q);
+	  if (delitm == -1)
+	    printf ("QUEUE UNDERFLOW\n");
+	  else
+	    printf ("DELETED ITEM =%d\n", delitm);
+	  break;
+	case 3:
+	  display (&rear, &front, q);
+	  break;
+	case 4:
+	  exit (0);
+	default:
+	  printf ("INVALID CHOICE !!TRY AGAIN \n");
+	  break;
+	}
+    }
+  return 0;
+}
+
+08)
+     Implement Insert, Delete and Display operations on Singly Linked List.
+#include <stdio.h>
+#include <stdlib.h>
+#include<ctype.h>
+     struct node
+     {
+       int info;
+       struct node *link;
+     };
+
+typedef struct node *NODE;
+NODE getnode ()
+{
+  NODE x;
+  x = (NODE) malloc (sizeof (struct node));
+  if (x == NULL)
+    {
+      printf ("OUT OF MEMEORY \n");
+      exit (0);
+    }
+  return x;
+}
+
+NODE insertfront (int item, NODE first)
+{
+  NODE temp;
+  temp = getnode ();
+  temp->info = item;
+  temp->link = first;
+  return temp;
+}
+
+void display (NODE first)
+{
+  NODE temp;
+  if (first == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+      return;
+    }
+  printf ("THE CONTENTS ARE\n");
+  temp = first;
+  while (temp != NULL)
+    {
+      printf ("%d\t", temp->info);
+      temp = temp->link;
+    }
+  printf ("\n");
+}
+
+NODE delfront (NODE first)	//FUNCTION TO DELETE FIRST NODE
+{
+  NODE temp;
+  if (first == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+      return first;
+    }
+  temp = first;
+  first = first->link;
+  printf ("DELETED ITEM =%d\n", temp->info);
+  free (temp);
+  return first;
+}
+
+NODE insertrear (int item, NODE first)
+{
+  NODE temp, cur;
+  temp = getnode ();
+  temp->info = item;
+  temp->link = NULL;
+  if (first == NULL)
+    {
+      return temp;
+    }
+  cur = first;
+  while (cur->link != NULL)
+    {
+      cur = cur->link;
+    }
+  cur->link = temp;
+  return first;
+}
+
+NODE delrear (NODE first)
+{
+  NODE cur, prev;
+  if (first == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+      return first;
+    }
+  if (first->link == NULL)
+    {
+      printf ("DELETED ITEM IS %d\n", first->info);
+      free (first);
+      first = NULL;
+      return first;
+    }
+  prev = NULL;
+  cur = first;
+  while (cur->link != NULL)
+    {
+      prev = cur;
+      cur = cur->link;
+    }
+  printf ("DELETED ITEM %d\n", cur->info);
+  free (cur);
+  prev->link = NULL;
+  return first;
+}
+
+NODE insertpos (int item, int pos, NODE first)
+{
+  NODE temp, prev, cur;
+  int counter;
+  temp = getnode ();
+  temp->info = item;
+  temp->link = NULL;
+  if (first == NULL && pos == 1)
+    return temp;
+  if (first == NULL)
+    {
+      printf ("INVALID POSITION\n");
+      return first;
+    }
+  if (pos == 1)
+    {
+      temp->link = first;
+      return temp;
+    }
+  counter = 1;
+  prev = NULL;
+  cur = first;
+  while (cur != NULL && counter != pos)
+    {
+      prev = cur;
+      cur = cur->link;
+      counter++;
+    }
+  if (counter == pos)
+    {
+      prev->link = temp;
+      temp->link = cur;
+      return first;
+    }
+  else
+    printf ("INVALID POSITION\n");
+  return first;
+}
+
+NODE delinfo (int item, NODE first)
+{
+  NODE prev, cur;
+  if (first == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+      return NULL;
+    }
+  if (item == first->info)
+    {
+      cur = first;
+      first = first->link;
+      free (cur);
+      return first;
+    }
+  prev = NULL;
+  cur = first;
+  while (cur != NULL && item != cur->info)
+    {
+      prev = cur;
+      cur = cur->link;
+    }
+  if (cur == NULL)
+    {
+      printf ("ITEM NOT FOUND\n");
+      return first;
+    }
+  prev->link = cur->link;
+  free (cur);
+  return first;
+}
+
+NODE delpos (int pos, NODE first)
+{
+  NODE cur, prev;
+  int counter;
+  if (first == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+      return NULL;
+    }
+  if (pos == 1)
+    {
+      cur = first;
+      first = first->link;
+      free (cur);
+      return first;
+    }
+  prev = NULL;
+  cur = first;
+  counter = 1;
+  while (cur != NULL && counter != pos)
+    {
+      prev = cur;
+      cur = cur->link;
+      counter++;
+    }
+  if (cur == NULL)
+    {
+      printf ("INVALID POSITION\n");
+      return first;
+    }
+  else
+    prev->link = cur->link;
+  free (cur);
+  return first;
+}
+
+void search (int item, NODE first)
+{
+  NODE cur;
+  int pos;
+  if (first == NULL)
+    {
+      printf ("LIST EMPTY\n");
+      return;
+    }
+  cur = first;
+  pos = 1;
+  while (cur != NULL && item != cur->info)
+    {
+      cur = cur->link;
+      pos++;
+    }
+  if (cur == NULL)
+    {
+      printf ("SEARCH UNSUCCESSFUL");
+      return;
+    }
+  printf ("SEARCH SUCCESSFUL &ITEM FOUND AT %d\n", pos - 1);
+}
+
+int main ()
+{
+  NODE first = NULL;
+  int ch, item, pos;
+  pos = 0;
+  while (1)
+    {
+      printf ("ENTER YOUR CHOICE\n");
+      printf ("1.INSERT AT FRONT END\n2.INSERT AT REAR END\n3.DELETE
+AT FRONT END\n");
+      printf ("4.DELETE AT REAR END\n5.INSERT AT SPECIFIED POSITION\
+n");
+      printf ("6.DELETE A PARTICULAR ELEMENT\n");
+      printf ("7.DELETE AT SPECIFIED POSITION\n");
+      printf ("8.SEARCH FOR A PARTICULAR ELEMENT\n");
+      printf ("9.DISPLAYING THE LINKED LIST\n");
+      printf ("10.EXIT\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("ENTER THE ELEMENT\n");
+	  scanf ("%d", &item);
+	  first = insertfront (item, first);
+	  break;
+	case 2:
+	  printf ("ENTER THE ELEMENT\n");
+	  scanf ("%d", &item);
+	  first = insertrear (item, first);
+	  break;
+	case 3:
+	  first = delfront (first);
+	  break;
+	case 4:
+	  first = delrear (first);
+	  break;
+	case 5:
+	  printf ("ENTER THE ITEM TO BE INSERTED\n");
+	  scanf ("%d", &item);
+	  printf ("ENTER THE POSITION OF INSERTION\n");
+	  scanf ("%d", &pos);
+	  first = insertpos (item, pos, first);
+	  break;
+	case 6:
+	  printf ("ENTER THE ELEMENT TO BE DELETED\n");
+	  scanf ("%d", &item);
+	  first = delinfo (item, first);
+	  break;
+	case 7:
+	  printf ("ENTER THE POSITION OF DELETION\n");
+	  scanf ("%d", &pos);
+	  first = delpos (pos, first);
+	  break;
+	case 8:
+	  printf ("ENTER THE SEARCH ELEMENT\n");
+	  scanf ("%d", &item);
+	  search (item, first);
+	  break;
+	case 9:
+	  display (first);
+	  break;
+	case 10:
+	  exit (0);
+	default:
+	  printf ("WRONG CHOICE!!TRY AGAIN\n");
+	}
+    }
+  return 0;
+}
+
+
+09)
+     Implement stack / queue operations using linked list.
+#include <stdio.h>
+#include <stdlib.h>
+     struct node
+     {
+       int info;
+       struct node *link;
+     };
+
+typedef struct node *NODE;
+NODE getnode ()
+{
+  NODE x;
+  x = (NODE) malloc (sizeof (struct node));
+  if (x == NULL)
+    {
+      printf ("\nOUT OF MEMORY");
+      exit (0);
+    }
+  return x;
+}
+
+NODE insert_front (int item, NODE first)
+{
+  NODE temp;
+  temp = getnode ();
+  temp->info = item;
+  temp->link = first;
+  return temp;
+}
+
+void display (NODE first)
+{
+  NODE cur;
+  if (first == NULL)
+    {
+      printf ("\nLIST IS EMPTY");
+      return;
+    }
+  printf ("\nThe contents of list are:\n");
+  cur = first;
+  while (cur != NULL)
+    {
+      printf ("%d\n", cur->info);
+      cur = cur->link;
+    }
+  printf ("\n");
+}
+
+NODE delete_front (NODE first)
+{
+  NODE cur;
+  if (first == NULL)
+    {
+      printf ("\nLIST IS EMPTY");
+      return first;
+    }
+  cur = first;
+  cur = cur->link;
+  printf ("\nDELETED ITEM:%d", first->info);
+  free (first);
+  return cur;
+}
+
+int main ()
+{
+  NODE first;
+  first = NULL;
+  int op, item;
+  while (1)
+    {
+      printf ("\n1.INSERT AT THE FRONT END \n2.DELETE AT THE FRONT
+END");
+      printf ("\n3.DISPLAY \n4.EXIT");
+      printf ("\nENTER YOUR OPTION:");
+      scanf ("%d", &op);
+      switch (op)
+	{
+	case 1:
+	  printf ("Enter the item to be inserted:");
+	  scanf ("%d", &item);
+	  first = insert_front (item, first);
+	  break;
+	case 2:
+	  first = delete_front (first);
+	  break;
+	case 3:
+	  display (first);
+	  break;
+	case 4:
+	  exit (0);
+	default:
+	  printf ("\nWRONG OPTION");
+	}
+    }
+  return 0;
+}
+
+10)
+     Implement Insert, Delete and Display operations on circular
+       Singly Linked List with header node.
+#include <stdio.h>
+#include <stdlib.h>
+     struct node
+     {
+       int info;
+       struct node *link;
+     };
+
+typedef struct node *NODE;
+NODE getnode ()
+{
+  NODE x;
+  x = (NODE) malloc (sizeof (struct node));
+  if (x == NULL)
+    {
+      printf ("OUT OF MEMORY\n");
+      exit (0);
+    }
+  return x;
+}
+
+NODE insert_front (int item, NODE head)
+{
+  NODE temp, first;
+  temp = getnode ();
+  temp->info = item;
+  first = head->link;
+  head->link = temp;
+  temp->link = first;
+  return head;
+}
+
+NODE insert_rear (int item, NODE head)
+{
+  NODE temp, cur;
+  temp = getnode ();
+  temp->info = item;
+  cur = head->link;
+  while (cur->link != head)
+    {
+      cur = cur->link;
+    }
+  cur->link = temp;
+  temp->link = head;
+  return head;
+}
+
+NODE delete_rear (NODE head)
+{
+  NODE prev, cur;
+  if (head->link == head)
+    {
+      printf ("List is empty\n");
+      return head;
+    }
+  cur = head->link;
+  prev = head;
+  while (cur->link != head)
+    {
+      prev = cur;
+      cur = cur->link;
+    }
+  prev->link = head;
+  printf ("The item deleted is %d\n", cur->info);
+  free (cur);
+  return head;
+}
+
+NODE delete_front (NODE head)
+{
+  NODE first, second;
+  if (head->link == head)
+    {
+      printf ("List is empty\n");
+      return head;
+    }
+  first = head->link;
+  second = first->link;
+  head->link = second;
+  printf ("The item deleted is %d\n", first->info);
+  free (first);
+  return head;
+}
+
+void display (NODE head)
+{
+  NODE temp;
+  {
+    if (head->link == head)
+      {
+	printf ("List is empty\n");
+	return;
+      }
+    printf ("The contents of singly linked listl\n");
+    temp = head->link;
+    while (temp != head)
+      {
+	printf ("%d ", temp->info);
+	temp = temp->link;
+      }
+  }
+}
+
+void main ()
+{
+  NODE head;
+  int choice, item;
+  head = getnode ();
+  head->link = head;
+  for (;;)
+    {
+      printf ("1:Insert_Front 2:insert_rear\t");
+      printf ("3:delete_front\t 4:delete_rear\t 5.exit\n");
+      printf ("Enter the choice\n");
+      scanf ("%d", &choice);
+      switch (choice)
+	{
+	case 1:
+	  printf ("Enter the item to be inserted in\n");
+	  scanf ("%d", &item);
+	  head = insert_front (item, head);
+	  break;
+	case 2:
+	  printf ("Enter the item to be inserted in\n");
+	  scanf ("%d", &item);
+	  head = insert_rear (item, head);
+	  break;
+	case 3:
+	  head = delete_front (head);
+	  break;
+	case 4:
+	  head = delete_rear (head);
+	  break;
+	case 5:
+	  display (head);
+	  break;
+	default:
+	  exit (0);
+	}
+    }
+}
+
+12)
+     Implement Insert, Delete and Display operations on Doubly Linked List.
+#include <stdio.h>
+#include <stdlib.h>
+     struct node
+     {
+       int info;
+       struct node *rlink;
+       struct node *llink;
+     };
+
+typedef struct node *NODE;
+NODE getnode ()
+{
+  NODE x;
+  x = (NODE) malloc (sizeof (struct node));
+  if (x == NULL)
+    {
+      printf ("OUT OF MEMORY\n");
+      exit (0);
+    }
+  return x;
+}
+
+NODE insertfront (int item, NODE head)
+{
+  NODE temp, cur;
+  temp = getnode ();
+  temp->info = item;
+  if (head->rlink == NULL)
+    {
+      head->rlink = temp;
+      temp->llink = head;
+      temp->rlink = NULL;
+      head->llink = NULL;
+      return head;
+    }
+  else
+    {
+      cur = head->rlink;
+      temp->rlink = cur;
+      head->rlink = temp;
+      cur->llink = temp;
+      temp->llink = head;
+      return head;
+    }
+}
+
+NODE insertrear (int item, NODE head)
+{
+  NODE temp, cur;
+  temp = getnode ();
+  temp->info = item;
+  if (head->rlink == NULL)
+    {
+      head->rlink = temp;
+      head->llink = NULL;
+      temp->rlink = NULL;
+      temp->llink = head;
+      return head;
+    }
+  cur = head->rlink;
+  while (cur->rlink != NULL)
+    {
+      cur = cur->rlink;
+    }
+  cur->rlink = temp;
+  temp->rlink = NULL;
+  temp->llink = cur;
+  head->llink = NULL;
+  return head;
+}
+
+NODE delfront (NODE head)
+{
+  NODE temp, cur;
+  if (head->rlink == NULL)
+    {
+      printf ("LIST IS EMPTY \n");
+      return head;
+    }
+  temp = head->rlink;
+  cur = temp->rlink;
+  if (cur == NULL)
+    {
+      head->rlink = NULL;
+    }
+  else
+    {
+      head->rlink = cur;
+      cur->llink = head;
+    }
+  printf ("DELETED ITEM =%d\n", temp->info);
+  free (temp);			//FREEING MEMORY
+  return head;
+}
+
+NODE delrear (NODE head)
+{
+  NODE temp, cur;
+  if (head->rlink == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+      return head;
+    }
+  else
+    {
+      temp = head->rlink;
+      while (temp->rlink != NULL)
+	{
+	  temp = temp->rlink;
+	}
+      if (temp->llink == head)
+	head->rlink = NULL;
+      else
+	{
+	  cur = temp->llink;
+	  cur->rlink = NULL;
+	  head->llink = NULL;
+	}
+      printf ("DELETED ITEM =%d\n", temp->info);
+      free (temp);
+      return head;
+    }
+}
+
+void display (NODE head)
+{
+  NODE temp;
+  if (head->rlink == NULL)
+    {
+      printf ("LIST IS EMPTY\n");
+    }
+  else
+    {
+      temp = head->rlink;
+      while (temp != NULL)
+	{
+	  printf ("%d ", temp->info);
+	  temp = temp->rlink;
+	}
+    }
+  printf ("\n");
+}
+
+int main ()
+{
+  int ch, item;
+  NODE head = getnode ();
+  head->info = NULL;
+  head->rlink = NULL;
+  head->llink = NULL;
+  while (1)
+    {
+      printf
+	("1.Insert Front 2.Insert Rear 3.Delete Front 4.Delete Rear 5.Display
+6.Exit\n");
+      printf ("ENTER YOUR CHOICE\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("ENTER THE ITEM\n");
+	  scanf ("%d", &item);
+	  head = insertfront (item, head);
+	  break;
+	case 2:
+	  printf ("ENTER THE ITEM\n");
+	  scanf ("%d", &item);
+	  head = insertrear (item, head);
+	  break;
+	case 3:
+	  head = delfront (head);
+	  break;
+	case 4:
+	  head = delrear (head);
+	  break;
+	case 5:
+	  display (head);
+	  break;
+	case 6:
+	  exit (0);
+	  break;
+	default:
+	  printf ("INVALID CHOICE!!TRY AGAIN\n");
+	  break;
+	}
+    }
+  return 0;
+}
+
+12 Implement Insert, Delete and Display operations on Circular Doubly Linked
+  List.
+#include <stdio.h> #include
+< stdlib.h > struct node
+{
+  int info;
+  struct node *rlink;
+  struct node *llink;
+};
+
+typedef struct node *NODE;
+NODE getnode ()
+{
+  NODE x;
+  x = (NODE) malloc (sizeof (struct node));
+  if (x == NULL)
+    {
+      printf ("OUT OF MEMORY\n");
+      exit (0);
+    }
+  return x;
+}
+
+NODE insertfront (int item, NODE head)
+{
+  NODE temp, cur;
+  temp = getnode ();
+  temp->info = item;
+  if (head->rlink == head)
+    {
+      head - >rlink = temp;
+      temp->llink = head;
+      temp->rlink = head;
+      head->llink = temp;
+      return head;
+    }
+  else
+    {
+      cur = head->rlink;
+      temp - >rlink = cur;
+      head->rlink = temp;
+      cur->llink = temp;
+      temp->llink = head;
+      return head;
+    }
+}
+
+NODE insertrear (int item, NODE head)
+{
+  NODE temp, cur;
+  temp = getnode ();
+  temp->info = item;
+  if (head->rlink == head)
+    {
+      head->rlink = temp;
+      head->llink = temp;
+      temp->rlink = head;
+      temp->llink = head;
+      return head;
+    }
+  cur = head - >llink;
+  cur - >rlink = temp;
+  temp - >rlink = head;
+  temp - >llink = cur;
+  head->llink = temp;
+  return head;
+}
+
+NODE delfront (NODE head)
+{
+  NODE temp, cur;
+  if (head->rlink == head)
+    {
+      printf ("LIST IS EMPTY \n");
+      return head;
+    }
+  temp = head->rlink;
+  cur = temp->rlink;
+  if (cur == head)
+    {
+      head->rlink = head;
+    }
+  else
+    {
+      head->rlink = cur;
+      cur->llink = head;
+    }
+  printf ("DELETED ITEM =%d\n", temp->info);
+  free (temp);
+  return head;
+}
+
+NODE delrear (NODE head)
+{
+  NODE temp, cur;
+  if (head->rlink == head)
+    {
+      printf ("LIST IS
+EMPTY\n");
+      return head;
+    }
+  else
+    {
+      temp = head->llink;
+      if (temp->llink == head)
+	head->rlink = head;
+      else
+	{
+	  cur = temp->llink;
+	  cur->rlink = head;
+	  head->llink = cur;
+	}
+      printf ("DELETED ITEM =%d\n", temp->info);
+      free (temp);
+      return head;
+    }
+}
+
+void display (NODE head)
+{
+  NODE temp;
+  if (head->rlink == head)
+    {
+      printf ("LIST IS EMPTY\n");
+    }
+  else
+    {
+      temp = head->rlink;
+      while (temp != head)
+	{
+	  printf ("%d ", temp->info);
+	  temp = temp->rlink;
+	}
+    }
+  printf ("\n");
+}
+
+int main ()
+{
+  int ch, item;
+  NODE head = getnode ();
+  head->info = NULL;
+  head->rlink = head;
+  head->llink = head;
+  while (1)
+    {
+      printf
+	("1.Insert Front 2.Insert Rear 3.Delete Front 4.Delete Rear 5.Display 6.Exit\n");
+      printf ("ENTER YOUR CHOICE\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("ENTER THE ITEM\n");
+	  scanf ("%d", &item);
+	  head = insertfront (item, head);
+	  break;
+	case 2:
+	  printf ("ENTER THE ITEM\n");
+	  scanf ("%d", &item);
+	  head = insertrear (item, head);
+	  break;
+	case 3:
+	  head = delfront (head);
+	  break;
+	case 4:
+	  head = delrear (head);
+	  break;
+	case 5:
+	  display (head);
+	  break;
+	case 6:
+	  exit (0);
+	  break;
+	default:
+	  printf ("INVALID CHOICE!!TRY AGAIN\n");
+	  break;
+	}
+    }
+  return 0;
+}
+
+13)
+     Construct a Binary Search Tree and traverse it using In order,
+       Preorder and Post order traversals.
+#include <stdio.h>
+#include <stdlib.h>
+     struct node
+     {
+       int info;
+       struct node *left;
+       struct node *right;
+     };
+
+typedef struct node *NODE;
+NODE insert (NODE r, int item)
+{
+  if (r == NULL)
+    {
+      r = (NODE) malloc (sizeof (struct node));
+      r->info = item;
+      r->left = NULL;
+      r->right = NULL;
+    }
+  else if (item < r->info)
+    r->left = insert (r->left, item);
+  else
+    r->right = insert (r->right, item);
+  return r;
+}
+
+void preorder (NODE root)
+{
+  if (root == NULL)
+    return;
+  printf ("%d ", root->info);
+  preorder (root->left);
+  preorder (root b right);
+}
+
+void inorder (NODE root)
+{
+  if (root == NULL)
+    return;
+  inorder (root->left);
+  printf ("%d ", root->info);
+  Inorder (root->right);
+}
+
+void postorder (NODE root)
+{
+  if (root == NULL)
+    return;
+  postorder (root->left);
+  postorder (root->right);
+  printf ("%d ", root->info);
+}
+
+NODE search (NODE root, int item)
+{
+  NODE cur;
+  if (root == NULL)
+    {
+      printf ("EMPTY TREE\n");
+      return;
+    }
+  else
+    {
+      cur = root;
+      while (cur != NULL)
+	{
+	  if (item == cur->info)
+	    return cur->info;
+	  else if (item < cur->info)
+	    cur = cur->left;
+	  else
+	    cur = cur->right;
+	}
+      return NULL;
+    }
+}
+
+int main ()
+{
+  int ch, item, i, n, it, temp;
+  NODE root;
+  root = (NODE) malloc (sizeof (struct node));
+  root = NULL;
+  while (1)
+    {
+      printf
+	("\n1.Insert 2.Preorder 3.Postorder 4.Inorder 5.Search 6.Exit\n");
+      printf ("\nEnter The Choice\n");
+      scanf ("%d", &ch);
+      switch (ch)
+	{
+	case 1:
+	  printf ("ENTER THE NO OF ELEMENTS\n");
+	  scanf ("%d", &n);
+	  for (i = 0; i < n; i++)
+	    {
+	      printf ("Enter The Item %d\n", i + 1);
+	      scanf ("%d", &item);
+	      root = insert (root, item);
+	    }
+	  break;
+	case 2:
+	  preorder (root);
+	  break;
+	case 3:
+	  postorder (root);
+	  break;
+	case 4:
+	  inorder (root);
+	  break;
+	case 5:
+	  printf ("ENTER THE ELEMENT TO BE SEARCHED\n");
+	  scanf ("%d", &it);
+	  temp = search (root, it);
+	  if (temp == NULL)
+	    printf ("SEARCH UNSUCCESSFULL\n");
+	  else
+	    printf ("%d is found in the tree\n", temp);
+	  break;
+	case 6:
+	  exit (0);
+	  break;
+	default:
+	  printf ("WRONG CHOICE!! TRY AGAIN\n");
+	}
+    }
+  return 0;
+}
+
+ </pre>
+</body>
+</html>
