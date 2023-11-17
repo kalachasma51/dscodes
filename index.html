@@ -9,50 +9,1131 @@
 _______________________________________________
 ________________________________________________
 
-1. Design,
-  Develop and Implement a menu driven Program in C for the following a)
-  To create an Array of N Integer Elements and store n values.b  Inserting
-    an Element (ELEM)
-     at a given valid Position (POS) b  Deleting an Element at a given valid
-       Position POS) b  Display of Array Elements b  Exit.Support the
-       aprogram with functions for each of the above operations.
-#include <stdio.h>
-#include <stdlib.h>
-     int a[20]
-       , elem, pos;
-     int n = 0;
-     void create ();
-     void insert ();
-     void delete ();
-     void display ();
-     int main ()
-     {
-       int ch;
-       while (1)
-	 {
-	   printf ("\n enter ypur choice:");
-	   printf
-	     ("\n 1.create\n 2.insert\n 3.delete\n 4.display\n 5.exit\n");
-	   scanf ("%d", &ch);
-	   switch (ch)
-	     {
-	     case 1:
-	       create ();
-	       break;
-	     case 2:
-	       insert ();
-	       break;
-	     case 3:
-	       delete ();
-	       break;
-	     case 4:
-	       display ();
-	       break;
-	     case 5:
-	       exit (0);
-	     default:
-	       printf ("\n invalid choice");
-	     }
+1. Design, Develop and Implement a menu driven Program in C for the following
+a) To create an Array of N Integer Elements and store n values.
+● Inserting an Element (ELEM) at a given valid Position (POS)
+● Deleting an Element at a given valid Position POS)
+● Display of Array Elements
+● Exit.
+Support the program with functions for each of the above operations.
+#include < stdio.h>
+#include < stdlib.h>
+int a[20],elem,pos;
+int n=0;
+void create();
+void insert();
+void delete();
+void display();
+int main()
+{
+int ch;
+while(1)
+{
+printf("\n enter ypur choice:");
+printf("\n 1.create\n 2.insert\n 3.delete\n 4.display\n 5.exit\n");
+scanf("%d",&ch);
+switch(ch)
+{
+case 1:create();
+break;
+case 2:insert();
+break;
+case 3:delete();
+break;
+case 4:display();
+break;
+case 5:exit(0);
+default:printf("\n invalid choice");
+}
+Subject Code: CS2001-1 Subject Title: Data Structures
+Chapter Number: Chapter Title: Practical’s
+PlannedHours:02 per Experiments
+}
+}
+void create()
+{
+printf("\n enter the number of elements:");
+scanf("%d",&n);
+printf("\n enter the elements:");
+for(int i=0;i< n;i++)
+{
+scanf("%d",&a[i]);
+}
+}
+void display()
+{
+if(n==0)
+{
+printf("\n no elements to be display ");
+return;
+}
+printf("\n array elements are:");
+for(int i=0;i< n;i++)
+{
+printf("%d\t",a[i]);
+}
+}
+void insert()
+{
+if(n==20)
+{
+printf("array is full");
+return;
+}
+printf("\n enter the position you want to enter:");
+scanf("%d",&pos);
+if(pos< 0||pos>n)
+{
+printf("\n invalid position");
+}
+else
+{
+printf("\n enter the element u want to insert:");
+scanf("%d",&elem);
+for(int i=n-1;i>=pos;i--)
+{
+a[i+1]=a[i];
+}
+a[pos]=elem;
+n=n+1;
+display();
+}
+}
+void delete()
+{ if(n==0)
+{
+printf("\n array is empty");
+return;
+}
+else
+{
+printf("\n enter a position u want to delete the element:");
+scanf("%d",&pos);
+if(pos< 0||pos>=n)
+{
+printf("\n invalid position");
+}
+else
+{
+elem=a[pos];
+printf("\n delete item is %d",elem);
+for(int i=pos;i< n-1;i++)
+{
+a[i]=a[i+1];
+}
+n=n-1;
+display();
+}
+}
+}
+b ) To create student structure with fields Roll No, Name, Semester, marks in 3 subjects. And
+Write functions to
+● Enter 5 students’ details and display the same using pointer to structure
+● Find Student wise and subject wise total marks and display the same.
+#include < stdio.h>
+#include < stdlib.h>
+struct student {
+int rollno;
+char name[20];
+int sem;
+float m1;
+float m2;
+float m3;
+};
+void enter5studentdetail(struct student *s) {
+int i;
+for (i = 0; i < 5; i++) {
+printf("Enter the details of student %d\n", i + 1);
+printf("Enter the roll number: ");
+scanf("%d", &(s + i)->rollno);
+printf("Enter the name of student: ");
+scanf("%s", (s + i)->name);
+printf("Enter the semester: ");
+scanf("%d", &(s + i)->sem);
+printf("Enter the marks in subject 1: ");
+scanf("%f", &(s + i)->m1);
+printf("Enter the marks in subject 2: ");
+scanf("%f", &(s + i)->m2);
+printf("Enter the marks in subject 3: ");
+scanf("%f", &(s + i)->m3);
+}
+}
+void display(struct student *s) {
+int i;
+for (i = 0; i < 5; i++) {
+printf("\nDetails of student %d\n", i + 1);
+printf("Roll number: %d\n", (s + i)->rollno);
+printf("Name: %s\n", (s + i)->name);
+printf("Semester: %d\n", (s + i)->sem);
+printf("Marks in subject 1: %.2f\n", (s + i)->m1);
+printf("Marks in subject 2: %.2f\n", (s + i)->m2);
+printf("Marks in subject 3: %.2f\n", (s + i)->m3);
+}
+}
+void studenttotal(struct student *s) {
+int i;
+float totalmarks;
+for (i = 0; i < 5; i++) {
+totalmarks = (s + i)->m1 + (s + i)->m2 + (s + i)->m3;
+printf("Total marks of student %d: %.2f\n", i + 1, totalmarks);
+}
+}
+void subjectwisetotmarks(struct student *s) {
+float totalm1 = 0, totalm2 = 0, totalm3 = 0;
+int i;
+for (i = 0; i < 5; i++) {
+totalm1 += (s + i)->m1;
+totalm2 += (s + i)->m2;
+totalm3 += (s + i)->m3;
+}
+printf("Total subject marks in subject 1: %.2f\n", totalm1);
+printf("Total subject marks in subject 2: %.2f\n", totalm2);
+printf("Total subject marks in subject 3: %.2f\n", totalm3);
+}
+int main() {
+struct student s[5];
+int choice;
+while (1) {
+printf("\nEnter the choice\n");
+printf("1. Enter 5 student details\n2. Display\n3. Student total\n4. Subject-
+wise total marks\n5. Exit\n");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+enter5studentdetail(s);
+break;
+case 2:
+display(s);
+break;
+case 3:
+studenttotal(s);
+break;
+case 4:
+subjectwisetotmarks(s);
+break;
+case 5:
+exit(0);
+default:
+printf("Invalid choice\n");
+break;
+}
+}
+return 0;
+}
+2. Design, Develop and Implement a menu driven Program in C for the following operations on
+a ) STACK of Integers (Array with structure Implementation of Stack with size MAX)
+● Push an Element on to Stack.
+● Pop an Element from Stack.
+● Demonstrate Overflow and Underflow situations on Stack.
+● Display the status of Stack .
+● Exit
+#include < stdio.h>
+#include < stdlib.h>
+#define max 3
+struct stack {
+int top;
+int q[max];
+}s;
+int main()
+{
+int choice,value;
+s.top=-1;
+while(1)
+{
+printf("enter your choice \n");
+printf("1.insert \n2.delete \n3.display \n4.exit \n");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:
+printf("enter the value you want to insert\n");
+scanf("%d",&value);
+insert(&s,value);
+break;
+case 2:
+deletion(&s);
+break;
+case 3:
+display(&s);
+break;
+case 4: exit(0);
+}
+}
+return 0;
+}
+void insert(struct stack *s,int value)
+{
+if(s->top == max-1)
+{
+printf("stack is full \n");
+}
+else
+{
+(s->top)++;
+s->q[s->top]=value;
+printf("insertion is successful \n");
+}
+}
+void deletion(struct stack *s)
+{
+if(s->top==-1)
+{
+printf("stack is empty \n");
+}
+else
+{
+printf("deleted element is %d \n",s->q[s->top]);
+(s->top)--;
+}
+}
+void display(struct stack *s)
+{
+if(s->top==-1)
+{
+printf("stack is empty \n");
+}
+else
+{
+printf("contents of stacks are \n");
+for(int i = 0; i<=s->top;i++)
+{
+printf("%d \n",s->q[i]);
+}
+}
+}
+3. Queue of Integers (Array with structure Implementation of Queue with size MAX)
+● Insert an Element in to Queue.
+● Delete an Element from Queue.
+● Demonstrate Overflow and Underflow situations on Queue.
+● Display the status of Queue .
+● Exit
+Support the program with appropriate functions for each of the above operations
+#include < stdio.h>
+#include < stdlib.h>
+#define max 5
+//simple queue it is
+struct queue
+{
+int rear;
+int front;
+int q[max];
+}s;
+int main()
+{
+int choice,value;
+s.rear= -1;
+s.front = 0;
+while(1)
+{
+printf("enter the choice \n");
+printf("1.insert \n 2.delete \n 3.display \n 4.exit \n");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:
+printf("enter the value you want to insert");
+scanf("%d",&value);
+insert(&s,value);
+break;
+case 2:
+del(&s);
+break;
+case 3:
+display(&s);
+break;
+case 4:
+exit(0);
+}
+}
+return 0;
+}
+void insert(struct queue *s , int value)
+{
+if(s->rear == max-1)
+{
+printf("queue is full");
+}
+else{
+(s->rear)++;
+s->q[s->rear] = value;
+}
+}
+void del(struct queue *s)
+{
+if(s->front> s->rear)
+{
+printf("queue is empty");
+}
+else
+{
+printf("deleted item is %d", s->q[s->front]);
+(s->front)++;
+}
+}
+void display(struct queue *s)
+{
+int count = 0;
+if(s->front> s-> rear)
+{
+printf("queue is empty \n");
+}
+else
+{ printf("elements are \n");
+for(int i=s->front;i<= s-> rear;i++)
+{
+count ++;
+printf("%d \n",s->q[i] );
+}
+printf("number of elements is %d \n",count);
+}
+}
+4. Design, Develop and Implement a Program in C for the following Stack Applications
+● Evaluation of Suffix expression with single digit operands and operators: +, -, *, /, %,
+^ b
+#include < stdio.h>
+#include < stdlib.h>
+#include< string.h>
+#include< ctype.h>
+#include< math.h>
+#define MAX 5
+struct stack
+{
+int top;
+int item[MAX];
+};
+double op(char, double, double);
+void push (char,struct stack *);
+double pop(struct stack *);
+int main()
+{
+struct stack s;
+s.top=-1;
+char sym,postfix[30];
+double op1,op2,res;
+printf("\n enter the postfix exp");
+gets(postfix);
+for(int i=0;i< strlen(postfix);i++)
+{
+sym=postfix[i];
+if(isdigit(sym))
+push(sym,&s);
+else
+{
+op2=pop(&s);
+op1=pop(&s);
+res=op(sym,op1,op2);
+if(res==-9999)
+{
+printf("invalid input");
+return 0;
+}
+s.item[++s.top]=res;
+}
+}
+res=s.item[s.top--];
+printf("\n result is %.2f",res);
+return 0;
+}
+void push(char sym,struct stack *s)
+{
+s->top++;
+s->item[s->top]=sym-'0';
+}
+double pop(struct stack *s)
+{
+double elem;
+elem=s->item[s->top];
+s->top--;
+return elem;
+}
+double op(char sym,double op1,double op2)
+{
+switch(sym)
+{
+case '+':return (op1+op2);
+case '-':return (op1-op2);
+case '*':return (op1*op2);
+case '/':return (op1/op2);
+case '$':
+case '^':return (pow(op1,op2));
+default:return -9999;
+}
+exit(0);
+}
+5. Design, Develop and Implement a Program in C for converting an Infix Expression to Postfix
+Expression. Program should support for both parenthesized and free parenthesized
+expressions with the operators: +, -, *, /, % (Remainder), ^ (Power) and alphanumeric
+operands
+#include< stdio.h>
+#include< stdlib.h>
+#include< string.h>
+int F(char symbol)
+{
+switch(symbol)
+{
+case '-':
+case '+':return 2;
+case '*':
+case '/':return 4;
+case '$':
+case '^':return 5;
+case ' (':return 0;
+case '#':return -1;
+default:return 8;
+}
+}
+int G(char symbol)
+{
+switch(symbol)
+{
+case '-':
+case '+':return 1;
+case '*':
+case '/':return 3;
+case '$':
+case '^':return 6;
+case '(':return 9;
+case ')':return 0;
+default:return 7;
+}
+}
+void infix_postfix(char infix[],char postfix[])
+{
+int top=-1,j=0,i;
+char s[30],symbol;
+s[++top]='#';
+for(i=0;i< strlen(infix);i++)
+{
+symbol=infix[i];
+while(F(s[top])>G(symbol))
+{
+postfix[j]=s[top--];
+j++;
+}
+if(F(s[top])!=G(symbol))
+{
+s[++top]=symbol;
+}
+else
+{
+top--;
+}
+}
+while(s[top] != '#')
+{
+postfix[j++]=s[top--];
+}
+postfix[j]='\0';
+}
+void main()
+{
+char infix[20],postfix[20];
+printf("\n enter the infix expression:");
+scanf("%s",infix);
+infix_postfix(infix,postfix);
+printf("\n the postfix expression is :");
+printf("%s",postfix);
+}
+6. Design, Develop and Implement a menu driven Program in C for the following operations on
+Circular QUEUE of Characters (Array Implementation of Queue with maximum size MAX)
+● Insert an Element on to Circular QUEUE.
+● Delete an Element from Circular QUEUE.
+● Demonstrate Overflow and Underflow situations on Circular QUEUE d. Display the
+status of Circular QUEUE.
+● Exit
+Support the program with appropriate functions for each of the above operations
+#include < stdio.h>
+#include < stdlib.h>
+#define max 5
+int rear = -1;
+int front = 0;
+int a[max];
+int count = 0;
+int i;
+void insert(int value)
+{
+if(count ==max)
+{
+printf("queue is full");
+}
+else
+{
+rear = rear +1%max;
+count++;
+a[rear] = value;
+printf("insertion is successful");
+}
+}
+void delete()
+{
+if(count == 0)
+{
+printf("queue is empty nothing to delete");
+}
+else
+{
+count--;
+front = front + 1%max;
+printf("deleted value is %d", a[front]);
+}
+}
+void display() {
+if(count == 0) {
+printf("queue is empty\n");
+}
+else {
+int j = front;
+for (i = 0; i < count; i++) {
+printf("%d ", a[j]);
+j = (j + 1) % max; // Move to the next element in the circular queue
+}
+printf("\n");
+}
+}
+int main()
+{
+int choice,value;
+while(1)
+{
+printf("enter the choice \n");
+printf("1.insert \n2.delete \n3.display \n4.exit \n");
+scanf("%d",&choice);
+switch (choice)
+{
+case 1 : printf("enter the value you want to
+insert");scanf("%d",&value);insert(value);break;
+case 2: delete(); break;
+case 3:display(); break;
+case 4: exit(0);
+default : printf("invalid bsdk");
+}
+}
+return 0;
+}
+7. Design, Develop and Implement a menu driven Program in C for the following operations on
+Singly Linked List (SLL) for data of integers.
+● Create a SLL of Data using front insertion.
+● Display the status of SLL and count the number of nodes in it.
+● Demonstration of stack
+● Demonstration of Queue.
+● Exit
+#-----Demonstration of Stack using SLL-----#
+#include < stdio.h>
+#include < stdlib.h>
+struct node
+{
+int info;
+struct node *link;
+};
+typedef struct node *NODE;
+NODE getnode()
+{
+NODE X;
+X= (NODE)malloc(sizeof(struct node));
+if(X== NULL)
+{
+printf("NOI MEM SPACE");
+}
+return(X);
+}
+void freenode(NODE X)
+{
+free(X);
+}
+NODE insertfront(NODE first, int value)
+{
+NODE temp;
+temp =getnode();
+temp-> info = value;
+temp->link=NULL;
+if(first==NULL)
+return(temp);
+temp->link= first;
+return (temp);
+}
+NODE deletefront(NODE first)
+{
+NODE temp;
+if(first==NULL)
+{
+printf("stack is empty \n");
+}
+temp=first;
+printf("delted element is %d \n",first->info);
+freenode(first);
+return(temp);
+}
+void display( NODE first)
+{
+NODE cur;
+if(first==NULL)
+printf("stack is empty");
+if(first->link==NULL)
+printf("%d",first->info);
+else
+{
+printf("contents are : \n");
+cur=first;
+while(cur!=NULL)
+{
+printf("%d",cur->info);
+cur=cur->link;
+}
+}
+}
+int main()
+{
+int choice,value;
+NODE first = NULL;
+while(1)
+{
+printf("enter your choice \n");
+printf("1.insert \n 2.delete \n 3.display \n 4.exit \n");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:
+printf("enter the value you want to insert");
+scanf("%d", &value);
+first = insertfront(first,value);
+break;
+case 2:
+first= deletefront(first); break;
+case 3:
+display(first);break;
+case 4:
+exit(0);
+}
+}
+return 0;
+}
+#------Demonstration of Queue using SLL-----#
+#include < stdio.h>
+#include < stdlib.h>
+#define MAX 5
+struct node
+{
+int info;
+struct node *link;
+};
+typedef struct node*NODE;
+NODE getnode()
+{
+NODE x;
+x=(NODE)malloc(sizeof(struct node));
+return x;
+}
+void freenode(NODE x)
+{
+free(x);
+}
+NODE insertrear(NODE first,int item)
+{
+NODE temp,cur;
+temp=getnode();
+temp->info=item;
+temp->link=NULL;
+if(first==NULL)
+return temp;
+cur=first;
+while(cur->link!=NULL)
+{
+cur=cur->link;
+}
+cur->link=temp;
+return first;
+}
+NODE deletefront(NODE first)
+{
+NODE cur,temp;
+if(first==NULL)
+{
+printf("\n the queue is empty");
+return first;
+}
+temp=first;
+temp=temp->link;
+printf("%d",first->info);
+freenode(first);
+return temp;
+}
+void display(NODE first)
+{
+NODE temp,cur;
+int count=0;
+if(first==NULL)
+{
+printf("\n queue is empty");
+return first;
+}
+first=temp;
+while(temp!=NULL)
+{
+printf("\n delete node is %d",temp->info);
+temp=temp->link;
+count++;
+}
+printf("\n the total count of the nodes are: %d",count);
+printf("\n");
+}
+8. Design, Develop and Implement a menu driven Program in C for the following operations on
+Circular Singly Linked List (CSLL) for data of integers.
+● Create a CSLL of data using front insertion.
+● Perform Insertion and Deletion to the right of the given node.
+● Perform Insertion and Deletion at end of CSLL.
+● Display the status of CSLL and count the number of nodes in it.
+● Exit
+#include < stdio.h>
+#include < stdlib.h>
+struct node {
+int info;
+struct node *link;
+};
+typedef struct node *NODE;
+NODE getnode() {
+NODE X;
+X = (NODE)malloc(sizeof(struct node));
+if (X == NULL)
+printf("Memory allocation failed\n");
+return (X);
+}
+void freenode(NODE X) {
+free(X);
+}
+NODE insertfront(NODE last, int value) {
+NODE temp;
+temp = getnode();
+temp->info = value;
+temp->link = NULL;
+if (last == NULL)
+last = temp;
+else {
+temp->link = last->link;
+last->link = temp;
+}
+return (last);
+}
+NODE insertrear(NODE last, int value) {
+NODE temp;
+temp = getnode();
+temp->info = value;
+temp->link = temp;
+if (last == NULL)
+last = temp;
+else {
+temp->link = last->link;
+last->link = temp;
+}
+return (temp);
+}
+NODE deleterear(NODE last) {
+NODE prev;
+if (last == NULL) {
+printf("List is empty\n");
+return last;
+}
+if (last->link == last) {
+printf("Deleted item is %d\n", last->info);
+freenode(last);
+return NULL;
+}
+else {
+prev = last->link;
+while (prev->link != last) {
+prev = prev->link;
+}
+prev->link = last->link;
+printf("Deleted element is %d\n", last->info);
+freenode(last);
+return prev;
+}
+}
+void display(NODE last) {
+NODE cur;
+int count = 0;
+if (last == NULL) {
+printf("List is empty\n");
+return;
+}
+printf("Contents of CLL are:\n");
+cur = last->link;
+while (cur != last) {
+count++;
+printf("%d\n", cur->info);
+cur = cur->link;
+}
+printf("%d\n", cur->info);
+count++;
+printf("Number of elements are %d\n", count);
+}
+NODE insertright(NODE last, int key, int value) {
+if (last == NULL) {
+printf("List is empty\n");
+return NULL;
+}
+NODE cur = last->link; // Start from the first node
+NODE temp;
+if (last->link == last&&last->info==key) {
+temp = getnode();
+temp->info = value;
+temp->link = last->link; // Link temp to itself
+last->link = temp; // Update last's link to temp
+return temp; // Return the newly inserted node
+}
+while (cur != last) {
+if (cur->info == key) {
+temp = getnode();
+temp->info = value;
+temp->link = cur->link; // Link temp to the node after cur
+cur->link = temp; // Link cur to temp
+return last; // Return last as the list hasn't changed
+}
+cur = cur->link;
+}
+if (cur->info == key) { // Check the last node separately
+temp = getnode();
+temp->info = value;
+temp->link = last->link; // Link temp to the node after last
+last->link = temp; // Link last to temp
+return last; // Return last as the list hasn't changed
+}
+printf("Node with given value %d not found in the list\n", key);
+return last; // Return last as the list hasn't changed
+}
+NODE deleteright(NODE last, int key) {
+if (last == NULL || last->link == last) {
+printf("List is empty or contains only one node\n");
+return last;
+}
+NODE cur, temp;
+cur = last->link;
+do {
+if (cur->info == key) {
+temp = cur->link;
+cur->link = temp->link;
+printf("Deleted element is %d\n", temp->info);
+freenode(temp);
+return last;
+}
+cur = cur->link;
+} while (cur != last);
+printf("Node with value %d not found in the list\n", key);
+return last;
+}
+int main() {
+int choice, value,key,delkey;
+NODE pos;
+NODE last = NULL;
+while (1) {
+printf("\nEnter your choice:\n");
+printf("1. Insert rear\n2. Delete rear\n3. Insert front\n4. Display\n5. Insert after
+\n6.delete right\n7. Exit\n");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+printf("Enter the value you want to insert: ");
+scanf("%d", &value);
+last = insertrear(last, value);
+break;
+case 2:
+last = deleterear(last);
+break;
+case 3:
+printf("Enter the value you want to insert: ");
+scanf("%d", &value);
+last = insertfront(last, value);
+break;
+case 4:
+display(last);
+break;
+case 5:
+printf("enter the nodevalue beside which u want to enter the node");
+scanf("%d",&key);
+printf("enter the value you want to insert");
+scanf("%d",&value);
+last = insertright(last,key,value);
+break;
+case 6 :
+printf("enter the nodevalue beside which u want to delete the node");
+scanf("%d",&delkey);
+last = deleteright(last,delkey);
+break;
+case 7:
+exit(0);
+default:
+printf("Invalid choice\n");
+}
+}
+return 0;
+}
+9. Design, Develop and Implement a menu driven Program in C for the following operations on
+Doubly Linked List (DLL) for data of integers.
+● Create a DLL of data .
+● Perform Insertion and Deletion at End of DLL.
+● Perform Insertion and Deletion at Front of DLL.
+● Display the status of DLL and count the number of nodes in it.
+● Exit
+#include < stdio.h>
+#include < stdlib.h>
+struct node
+{
+int info;
+struct node *rlink;
+struct node *llink;
+};
+typedef struct node *NODE;
+NODE createnode(int value)
+{
+NODE X;
+X = (NODE)malloc(sizeof(struct node));
+if(X==NULL)
+printf("memo allocation fail");
+X->info = value;
+X->rlink= X->llink = NULL;
+return(X);
+}
+void freenode(NODE X)
+{
+free(X);
+}
+NODE insertrear(NODE first)
+{
+NODE temp;
+int value;
+NODE cur;
+printf("insert the value you want to insert");
+scanf("%d",&value);
+temp = createnode(value);
+if(first == NULL)
+return(temp);
+else
+{
+cur = first;
+while(cur->rlink!=NULL)
+{
+cur = cur -> rlink ;
+}
+cur -> rlink =temp;
+temp->llink =cur;
+return (first);
+}
+}
+NODE deleterear (NODE first)
+{
+NODE cur,prev;
+if(first==NULL)
+printf("list is empty");
+if(first->rlink==NULL)
+{
+printf("deleted element is %d",first->info);
+freenode(first);
+return (NULL);
+}
+else
+{
+prev = NULL;
+cur = first;
+while(cur->rlink!=NULL)
+{
+prev = cur;
+cur = cur->rlink;
+}
+printf("deleted element is %d",cur->info);
+freenode(cur);
+prev->rlink=NULL;
+return(first);
+}
+}
+NODE insertfront(NODE first)
+{
+int value;
+NODE temp;
+printf("insert the value you want to insert");
+scanf("%d",&value);
+temp =createnode(value);
+if(first==NULL)
+return(temp);
+temp->rlink= first;
+first->llink=temp;
+return (temp);
+}
+NODE deletefront(NODE first)
+{
+NODE second;
+if(first==NULL) //check for empty list
+{
+printf("List is empty cannot deleted\n");
+return NULL; //we can replace NULL with first also
+}
+if(first->rlink==NULL) //delete if there is only one node
+{
+printf("item deleted=%d\n",first->info);
+free(first);
+return NULL;
+}
+second=first->rlink; //get the address of second node
+second->llink=NULL;//make second node as first node
+printf("item deleted=%d\n",first->info);
+free(first); //delete the first node
+return second;
+}
+void display( NODE first)
+{
+int count;
+NODE cur;
+if(first==NULL)
+printf("stack is empty");
+if(first->rlink==NULL)
+{
+printf("%d",first->info);
+count++;
+printf("number of nodes is %d",count);
+}
+else
+{
+printf("contents are : \n");
+cur=first;
+while(cur!=NULL)
+{
+count++;
+printf("%d \n",cur->info);
+cur=cur->rlink;
+}
+printf("\n");
+printf(" number of nodes is %d \n",count);
+}
+}
+int main()
+{
+int choice,value;
+NODE first = NULL;
+while(1)
+{
+printf(" \n enter your choice \n");
+printf("1.insertrear \n 2.deleterear \n 3.insertfront \n 4.deletefront \n 5.display \n 6.exit \n");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:
+first = insertrear(first);
+break;
+case 2:
+first= deleterear(first); break;
+case 3:
+first = insertfront(first);
+break;
+case 4:
+first = deletefront(first);
+break;
+case 5:
+display(first);break;
+case 6:
+exit(0);
+}
+}
+return 0;
+}
+
 	    
 ___________________________________________________________________________________________________________________________________________
 _____________________________________________________________________________________________________
